@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using CoreApi.WebUi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +21,17 @@ namespace CoreApi.WebUi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+
+            // typed client api
+            services.AddHttpClient<CoreApiService>();
+
+            //named api
+            services.AddHttpClient("coreapi", c =>
+            {
+                var baseUrl = Configuration.GetValue<string>("CoretApiBaseUrl");
+                c.BaseAddress = new Uri(baseUrl);
+                // can configure headers etc
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +58,7 @@ namespace CoreApi.WebUi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }

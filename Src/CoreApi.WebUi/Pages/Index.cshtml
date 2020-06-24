@@ -3,8 +3,40 @@
 @{
     ViewData["Title"] = "Home page";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div>
+    <div class="page-content page-container" id="page-content">
+        <div class="padding">
+            <div class="row container d-flex justify-content-center">
+                <div class="col-lg-12">
+                    <div class="card px-3">
+                        <div class="card-body">
+                            <h4 class="card-title"> <strong>Todo list </strong>  (api client demo)</h4>
+                            <div class="add-items d-flex"> <input type="text" class="form-control todo-list-input" placeholder="Add more tasks?"> <button class="add btn btn-primary font-weight-bold todo-list-add-btn">Add</button> </div>
+                            <div class="list-wrapper">
+                                <ul class="d-flex flex-column todo-list">
+                                    @foreach (var item in Model.TodoItems)
+                                    {
+                                        <li class="@(item.IsComplete? "completed" : "")">
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                    <input class="checkbox" type="checkbox" data-details='@Json.Serialize(item)' checked="@item.IsComplete">@item.Name<i class="input-helper"></i>
+                                                </label>
+                                            </div>
+                                            <i class="remove mdi mdi-close-circle-outline" data-id="@item.Id">
+                                            </i>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts
+{
+    <script src="~/js/toDoList.js" asp-append-version="true"></script>
+}
